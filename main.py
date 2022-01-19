@@ -1,18 +1,32 @@
+import math
 import random
+import os, sys
+
+
+try:
+    # if the filename is passed, use that
+    library_file = sys.argv[1:][0]
+except:
+    # otherwise use the default
+    PATH = os.path.dirname(os.path.abspath(__file__))
+    library_file = PATH + "/prompt_library.txt"
 
 prompts = []
 
-f = open("prompt_library.txt", "r")
+try:
+    f = open(library_file, "r")
+except:
+    print ("error: filename in argument not found- use full path to file")
+    exit()
+
 for l in f:
-    if l.startswith("#") or len(l.strip()) == 0:
-        continue
-    prompts.append(l)
+    if l.startswith("-"):
+        prompts.append(l[2:])
+
 f.close()
 
-i = int(random.random()*len(prompts))
+i = math.floor(random.random()*len(prompts))
 
 prompt = prompts[i]
 
-f = open("prompt.txt", "w")
-f.write(prompt)
-f.close()
+print ("## _Journal Prompt_: " + prompt.strip() + " #journal")
